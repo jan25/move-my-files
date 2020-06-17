@@ -1,4 +1,3 @@
-
 # Features
 
 - Add configuration to patten match file names and destination directory
@@ -9,6 +8,7 @@
 
 - Store configuration in `HOME/mmf-data` directory
 - Configuration as yaml file
+
 ```
 config:
   - name: MY_PATTERN
@@ -16,7 +16,11 @@ config:
     patterns: [ PATTERN1, PATTERN2 ]
     pattern: PATTERN3
 ```
+
+- DEST_DIR field in config file must be absolute path to a directory on disk
+
 - Usage
+
 ```
 # Define configuration
 
@@ -40,9 +44,8 @@ mmf --source soure/dir --dest-dir dest/dir --pattern ".jpg$"
 - Some limitations:
   - Files are matched at top level only. No recursive comparisions done.
   - Sub directories are not moved from source dir
-  - Target dir path must be a directory
+  - Source and Target paths must be existing valid directories
 
-
-- Source is the source directory to move files from
-- Pattern is a regex to used to match and move files
-- Dest and target mean the same thing
+* Source is the source directory to move files from
+* Pattern is a regex to used to match and move files
+* Dest and target mean the same thing

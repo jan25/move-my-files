@@ -6,4 +6,5 @@
 #
 click==7.1.2              # via -r requirements.in
 pathtools==0.1.2          # via watchdog
+pyyaml==5.3.1             # via -r requirements.in
 watchdog==0.10.2          # via -r requirements.in
