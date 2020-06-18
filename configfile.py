@@ -26,22 +26,46 @@ class Config(yaml.YAMLObject):
         return self.__dict__
 
     def __str__(self):
-        patterns_str = ','.join(list(set(self.patterns + [self.pattern])))
+        patterns_str = ','.join(list(set(self.patterns or [self.pattern])))
         return f'Name={self.name}, ' + \
             f'Destination={self.dest_dir}, ' + \
             f'Patterns={patterns_str}'
 
 
+def _initialize_datadir():
+    if not os.path.exists(os.path.dirname(CONFIG_FILE_PATH)):
+        try:
+            os.makedirs(os.path.dirname(CONFIG_FILE_PATH))
+        except:
+            raise Error('Failed to initialize configuration directory')
+    with open(CONFIG_FILE_PATH, 'w') as f:
+        f.write('config: []')  # empty config
+
+
 def load_configs():
-    with open(CONFIG_FILE_PATH, 'r') as f:
-        conf = f.read()
-        yml = yaml.safe_load(conf)
-        entries = yml['config']
-        return [Config(e) for e in entries]
+    if not os.path.exists(CONFIG_FILE_PATH):
+        _initialize_datadir()
+
+    try:
+        with open(CONFIG_FILE_PATH, 'r') as f:
+            conf = f.read()
+            yml = yaml.safe_load(conf)
+            entries = yml['config']
+            return [Config(e) for e in entries]
+    except:
+        raise Error('Failed to load configuration from mmf-data/conf.yml')
 
 
-def add_new_config(name, dest_dir, pattern, patterns):
-    # TODO validate dest_dir, pattern(s) args, check duplicate config names
+def add_new_config(name, dest_dir, pattern=None, patterns=None):
+    if not os.path.exists(CONFIG_FILE_PATH):
+        _initialize_datadir()
+
+    if pattern is None and (patterns is None or len(patterns) == 0):
+        raise Error('No pattern supplied')
+    if not os.path.isdir(dest_dir):
+        raise Error('Destination is not a valid directory')
+
+    dest_dir = os.path.abspath(dest_dir)
     configs = load_configs()
     configs.append(Config({
         'name': name,
@@ -58,9 +82,3 @@ def _dump_configs(configs):
         yml['config'].append(c.to_dict())
     with open(CONFIG_FILE_PATH, 'w') as f:
         yaml.dump(yml, f)
-
-
-add_new_config('custom', 'new/dest/dir', '.', ['.'])
-configs = load_configs()
-for c in configs:
-    print(c)

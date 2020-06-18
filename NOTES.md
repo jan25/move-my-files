@@ -7,7 +7,7 @@
 # Design
 
 - Store configuration in `HOME/mmf-data` directory
-- Configuration as yaml file
+- Configuration as yaml file. First use of cli created the configuration directory and default config file
 
 ```
 config:
