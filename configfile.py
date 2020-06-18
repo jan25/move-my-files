@@ -13,13 +13,7 @@ class Error(Exception):
 
 
 class Config(yaml.YAMLObject):
-    def __init__(self):
-        self.name = 'Unnamed config'
-        self.dest_dir = None
-        self.pattern = None
-        self.patterns = None
-
-    def serialize(self, obj):
+    def __init__(self, obj):
         try:
             self.name = obj['name']
             self.dest_dir = obj['dest_dir']
@@ -27,7 +21,9 @@ class Config(yaml.YAMLObject):
             self.patterns = obj['patterns']
         except:
             raise Error('Invalid configuration')
-        return self
+
+    def to_dict(self):
+        return self.__dict__
 
     def __str__(self):
         patterns_str = ','.join(list(set(self.patterns + [self.pattern])))
@@ -40,14 +36,31 @@ def load_configs():
     with open(CONFIG_FILE_PATH, 'r') as f:
         conf = f.read()
         yml = yaml.safe_load(conf)
-        print(Config().serialize(yml['config'][0]))
-        print('-%s-' % yaml.dump(yml))
+        entries = yml['config']
+        return [Config(e) for e in entries]
 
 
-load_configs()
+def add_new_config(name, dest_dir, pattern, patterns):
+    # TODO validate dest_dir, pattern(s) args, check duplicate config names
+    configs = load_configs()
+    configs.append(Config({
+        'name': name,
+        'dest_dir': dest_dir,
+        'pattern': pattern,
+        'patterns': patterns,
+    }))
+    _dump_configs(configs)
 
 
-def dump_configs(configs):
-    # TODO make yaml string
-    yml = ''
-    yaml.dump(yml, os.file(CONFIG_FILE_PATH, 'w'))
+def _dump_configs(configs):
+    yml = {'config': []}
+    for c in configs:
+        yml['config'].append(c.to_dict())
+    with open(CONFIG_FILE_PATH, 'w') as f:
+        yaml.dump(yml, f)
+
+
+add_new_config('custom', 'new/dest/dir', '.', ['.'])
+configs = load_configs()
+for c in configs:
+    print(c)
