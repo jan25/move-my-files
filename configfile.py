@@ -1,8 +1,8 @@
 import yaml
 import os
 
-# TODO use absolute path to put this in HOME
-CONFIG_FILE_PATH = './conf-test/conf.yml'
+# Configuration file path under HOME directory
+CONFIG_FILE_PATH = os.path.expanduser('~') + '/mmf-data/conf.yml'
 
 
 class Error(Exception):

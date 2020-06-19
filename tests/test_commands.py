@@ -8,6 +8,7 @@ from commands import ls, add, move
 
 def test_add(tmp_path):
     runner = CliRunner()
+    configfile.CONFIG_FILE_PATH = './conf.yml'
 
     with runner.isolated_filesystem():
         result = runner.invoke(
@@ -43,8 +44,13 @@ def test_add(tmp_path):
 
 def test_ls():
     runner = CliRunner()
+    configfile.CONFIG_FILE_PATH = './conf.yml'
+
     with runner.isolated_filesystem():
         os.makedirs('./test/to')
+        result = runner.invoke(ls)
+        assert result.exit_code == 0
+        assert result.stdout == 'No configurations available\n'
         result = runner.invoke(
             add, ['-d', './test/to', '-p', '.py', '-n', 'pyfiles'])
         assert result.exit_code == 0
@@ -59,6 +65,8 @@ def test_ls():
 
 def test_move():
     runner = CliRunner()
+    configfile.CONFIG_FILE_PATH = './conf.yml'
+
     with runner.isolated_filesystem():
         os.makedirs('./test/from')
         os.makedirs('./test/to')

@@ -159,8 +159,11 @@ def add(dest_dir, pattern, name):
 def ls():
     try:
         configs = configfile.load_configs()
-        for config in configs:
-            click.echo(config)
+        if len(configs) > 0:
+            for config in configs:
+                click.echo(config)
+        else:
+            click.echo('No configurations available')
     except configfile.Error as err:
         click.echo(err)
     except:
