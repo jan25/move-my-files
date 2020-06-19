@@ -42,10 +42,14 @@ mmf --source soure/dir --dest-dir dest/dir --pattern ".jpg$"
 ```
 
 - Some limitations:
+
   - Files are matched at top level only. No recursive comparisions done.
   - Sub directories are not moved from source dir
   - Source and Target paths must be existing valid directories
+  - Configuration don't include explicit source directory
 
-* Source is the source directory to move files from
-* Pattern is a regex to used to match and move files
-* Dest and target mean the same thing
+- Source is the source directory to move files from
+- Pattern is a regex to used to match and move files
+- Destination and target directory mean the same thing
+
+- Emojis in output

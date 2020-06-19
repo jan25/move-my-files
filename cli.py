@@ -7,6 +7,7 @@ import click
 import traceback
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler
+import configfile
 
 
 class Error(Exception):
@@ -62,7 +63,7 @@ def watch_srcdir(srcdir, pat, destdir):
         observer.join()
 
 
-@click.command()
+@click.command(help='Move files')
 @click.option(
     '-s',
     '--source',
@@ -87,7 +88,7 @@ def watch_srcdir(srcdir, pat, destdir):
     '--watch',
     is_flag=True,
     help='Watch a source directory for files to move')
-def mmf(source, dest_dir, pattern, watch):
+def move(source, dest_dir, pattern, watch):
     try:
         if watch:
             watch_srcdir(source, pattern, dest_dir)
@@ -99,6 +100,58 @@ def mmf(source, dest_dir, pattern, watch):
         print(Error("Unexpected error"))
         traceback.print_exc()
 
+
+@click.command(help='Add new configuration')
+@click.option(
+    '-d',
+    '--dest-dir',
+    required=True,
+    type=click.STRING,
+    help='Destination directory path')
+@click.option(
+    '-p',
+    '--pattern',
+    default='.*',
+    type=click.STRING,
+    help='Regex to match file names in source directory. Defaults to .* (all files)')
+@click.option(
+    '-n',
+    '--name',
+    required=True,
+    type=click.STRING,
+    help='Unique name for configuration')
+def add(dest_dir, pattern, name):
+    patterns = None  # TODO add support for multiple patterns
+    try:
+        configfile.add_new_config(name, dest_dir, pattern, patterns)
+    except configfile.Error as err:
+        click.echo(err)
+    except:
+        click.echo(Error("Unexpected error"))
+        traceback.print_exc()
+
+
+@click.command(help='List configurations')
+def ls():
+    try:
+        configs = configfile.load_configs()
+        for c in configs:
+            click.echo(c)
+    except configfile.Error as err:
+        click.echo(err)
+    except:
+        click.echo(Error("Unexpected error"))
+        traceback.print_exc()
+
+
+@click.group(help='Move My Files CLI tool')
+def mmf():
+    pass
+
+
+mmf.add_command(move, 'move')
+mmf.add_command(add, 'add')
+mmf.add_command(ls, 'list')
 
 if __name__ == '__main__':
     mmf()

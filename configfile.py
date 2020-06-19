@@ -1,7 +1,7 @@
 import yaml
 import os
 
-CONFIG_FILE_PATH = './test/conf.yml'
+CONFIG_FILE_PATH = './conf-test/conf.yml'
 
 
 class Error(Exception):
@@ -29,7 +29,7 @@ class Config(yaml.YAMLObject):
         patterns_str = ','.join(list(set(self.patterns or [self.pattern])))
         return f'Name={self.name}, ' + \
             f'Destination={self.dest_dir}, ' + \
-            f'Patterns={patterns_str}'
+            f'Patterns={patterns_str}'  # TODO improve pattern printing
 
 
 def _initialize_datadir():
@@ -67,6 +67,10 @@ def add_new_config(name, dest_dir, pattern=None, patterns=None):
 
     dest_dir = os.path.abspath(dest_dir)
     configs = load_configs()
+    for c in configs:
+        if c.name == name:
+            raise Error(f'Configuration {name} already exists')
+
     configs.append(Config({
         'name': name,
         'dest_dir': dest_dir,
