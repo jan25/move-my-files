@@ -41,6 +41,10 @@ mmf --watch --source source/dir/path
 mmf --source soure/dir --dest-dir dest/dir --pattern ".jpg$"
 ```
 
+- Have a way to clean configurations to handle error cases. E.g. Dest dir deleted
+
+- Helpful output messages. Mainly for watch commands
+
 - Some limitations:
 
   - Files are matched at top level only. No recursive comparisions done.

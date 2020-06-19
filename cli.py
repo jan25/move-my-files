@@ -22,19 +22,23 @@ def match(pat, filename):
     return re.search(pat, filename) is not None
 
 
-def validate_dirs(srcdir, destdir):
+def validate_srcdir(srcdir):
     if not os.path.exists(srcdir):
         raise Error('source directory does not exist')
-    if not os.path.exists(destdir):
-        raise Error('destination directory does not exist')
     if not os.path.isdir(srcdir):
         raise Error('source is not a valid directory')
+
+
+def validate_destdir(destdir):
+    if not os.path.exists(destdir):
+        raise Error('destination directory does not exist')
     if not os.path.isdir(destdir):
         raise Error('destination is not a valid directory')
 
 
 def move_files(srcdir, pat, destdir):
-    validate_dirs(srcdir, destdir)
+    validate_srcdir(srcdir)
+    validate_destdir(destdir)
 
     with os.scandir(srcdir) as it:
         for entry in it:
@@ -43,8 +47,23 @@ def move_files(srcdir, pat, destdir):
                 print(f'{entry.path} moved to {final_dest}')
 
 
-def watch_srcdir(srcdir, pat, destdir):
-    validate_dirs(srcdir, destdir)
+def handle_one_off_move(srcdir, pat=None, destdir=None, name=None):
+    validate_srcdir(srcdir)
+
+    if not destdir:
+        configs = configfile.load_configs()
+        for config in configs:
+            if name:
+                if name == config.name:
+                    move_files(srcdir, config.pattern, config.dest_dir)
+            else:
+                move_files(srcdir, config.pattern, config.dest_dir)
+    else:
+        move_files(srcdir, pat, destdir)
+
+
+def handle_watch(srcdir, pat=None, destdir=None, name=None):
+    validate_srcdir(srcdir)
 
     event_handler = LoggingEventHandler()
     observer = Observer()
@@ -53,7 +72,7 @@ def watch_srcdir(srcdir, pat, destdir):
 
     try:
         while True:
-            move_files(srcdir, pat, destdir)
+            handle_one_off_move(srcdir, pat, destdir, name)
             time.sleep(1)
     except KeyboardInterrupt:
         observer.stop()
@@ -74,7 +93,6 @@ def watch_srcdir(srcdir, pat, destdir):
 @click.option(
     '-d',
     '--dest-dir',
-    required=True,
     type=click.STRING,
     help='Destination directory path')
 @click.option(
@@ -84,16 +102,21 @@ def watch_srcdir(srcdir, pat, destdir):
     type=click.STRING,
     help='Regex to match file names in source directory. Defaults to .* (all files)')
 @click.option(
+    '-n',
+    '--name',
+    type=click.STRING,
+    help='Name of configuration to use')
+@click.option(
     '-w',
     '--watch',
     is_flag=True,
     help='Watch a source directory for files to move')
-def move(source, dest_dir, pattern, watch):
+def move(source, dest_dir, pattern, name, watch):
     try:
         if watch:
-            watch_srcdir(source, pattern, dest_dir)
+            handle_watch(source, pattern, dest_dir, name)
         else:
-            move_files(source, pattern, dest_dir)
+            handle_one_off_move(source, pattern, dest_dir, name)
     except Error as err:
         print(err)
     except:
@@ -135,8 +158,8 @@ def add(dest_dir, pattern, name):
 def ls():
     try:
         configs = configfile.load_configs()
-        for c in configs:
-            click.echo(c)
+        for config in configs:
+            click.echo(config)
     except configfile.Error as err:
         click.echo(err)
     except:
