@@ -2,8 +2,8 @@ import os
 from click.testing import CliRunner
 import pytest
 import signal
-import configfile
-from commands import ls, add, move
+import app.configfile as configfile
+from app.commands import ls, add, move
 
 
 def test_add(tmp_path):

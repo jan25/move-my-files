@@ -1,5 +1,5 @@
 import click
-from commands import move, add, ls
+from app.commands import move, add, ls
 
 
 @click.group(help='Move My Files CLI tool')

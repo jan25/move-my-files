@@ -7,7 +7,7 @@ import click
 import traceback
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler
-import configfile
+import app.configfile as configfile
 
 
 class Error(Exception):

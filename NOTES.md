@@ -57,3 +57,7 @@ mmf --source soure/dir --dest-dir dest/dir --pattern ".jpg$"
 - Destination and target directory mean the same thing
 
 - Emojis in output
+
+- Use tox
+
+- Add version numbers at requires in setup.py

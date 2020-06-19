@@ -1,6 +1,6 @@
 import os
 import pytest
-import configfile
+import app.configfile as configfile
 
 SAMPLE_CONFIG = '''config:
 - dest_dir: /Users/user/home/test/dest
