@@ -165,16 +165,3 @@ def ls():
     except:
         click.echo(Error("Unexpected error"))
         traceback.print_exc()
-
-
-@click.group(help='Move My Files CLI tool')
-def mmf():
-    pass
-
-
-mmf.add_command(move, 'move')
-mmf.add_command(add, 'add')
-mmf.add_command(ls, 'list')
-
-if __name__ == '__main__':
-    mmf()

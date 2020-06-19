@@ -7,3 +7,9 @@ mmf is a cli tool to organise your files on your computer. Tell it the file name
 ```
 python3 -m pytest [test_file.py]
 ```
+
+## Run
+
+```
+python3 . move -s src/dir -w
+```

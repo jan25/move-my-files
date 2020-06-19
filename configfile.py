@@ -1,6 +1,7 @@
 import yaml
 import os
 
+# TODO use absolute path to put this in HOME
 CONFIG_FILE_PATH = './conf-test/conf.yml'
 
 
