@@ -1,5 +1,5 @@
 import click
-import cmd
+from commands import move, add, ls
 
 
 @click.group(help='Move My Files CLI tool')
@@ -7,9 +7,9 @@ def mmf():
     pass
 
 
-mmf.add_command(cmd.move, 'move')
-mmf.add_command(cmd.add, 'add')
-mmf.add_command(cmd.ls, 'list')
+mmf.add_command(move, 'move')
+mmf.add_command(add, 'add')
+mmf.add_command(ls, 'list')
 
 if __name__ == '__main__':
     mmf()

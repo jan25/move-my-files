@@ -146,7 +146,8 @@ def move(source, dest_dir, pattern, name, watch):
 def add(dest_dir, pattern, name):
     patterns = None  # TODO add support for multiple patterns
     try:
-        configfile.add_new_config(name, dest_dir, pattern, patterns)
+        config = configfile.add_new_config(name, dest_dir, pattern, patterns)
+        click.echo(f'Added: {config}')
     except configfile.Error as err:
         click.echo(err)
     except:

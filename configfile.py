@@ -79,6 +79,7 @@ def add_new_config(name, dest_dir, pattern=None, patterns=None):
         'patterns': patterns,
     }))
     _dump_configs(configs)
+    return configs[-1]
 
 
 def _dump_configs(configs):
