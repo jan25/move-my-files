@@ -53,7 +53,7 @@ Available shortcuts for options:
 - `--pattern`: `-p`
 - `--watch`: `-w`
 
-## Develop
+## Development
 
 Fork and clone this repository to develop on latest master branch. General steps to execute python code form this repo:
 
@@ -75,12 +75,14 @@ Local testing with unit tests and CLI:
 python3 -m pytest tests -v
 
 # Install CLI locally to test (basically testing setup.py)
-python install -e .
+pip install -e .
 mmf
 ```
 
 For Packaging and publishing see here:
 
 - https://packaging.python.org/guides/distributing-packages-using-setuptools
+
+## Contribute
 
 If you have ideas to improve this tool, feel free to raise a new issue in the Issues section or open a PR :)

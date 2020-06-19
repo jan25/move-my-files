@@ -9,11 +9,11 @@
 - Store configuration in `HOME/mmf-data` directory
 - Configuration as yaml file. First use of cli created the configuration directory and default config file
 
-```
+```yaml
 config:
   - name: MY_PATTERN
     dest: DEST_DIR
-    patterns: [ PATTERN1, PATTERN2 ]
+    patterns: [PATTERN1, PATTERN2]
     pattern: PATTERN3
 ```
 
@@ -21,7 +21,7 @@ config:
 
 - Usage
 
-```
+```sh
 # Define configuration
 
 mmf add --pattern ".jpg$" --dest-dir dest/dir/path --name jpg_files
@@ -61,3 +61,7 @@ mmf --source soure/dir --dest-dir dest/dir --pattern ".jpg$"
 - Use tox
 
 - Add version numbers at requires in setup.py
+
+## Misc
+
+- Nice talk on python packages and publishing https://www.youtube.com/watch?v=GIF3LaRqgXo
