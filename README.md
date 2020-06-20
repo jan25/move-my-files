@@ -36,8 +36,8 @@ Define your favorite configurations using `add` command. This command keeps trac
 
 ```sh
 # Add configuration
-mmf add --dest-dir ~/Documents/images --pattern .png
-mmf add --dest-dir ~/Documents/pyfiles --pattern .py
+mmf add --dest-dir ~/Documents/images --pattern .png --name imagefiles
+mmf add --dest-dir ~/Documents/pyfiles --pattern .py --name pyfiles
 
 # List configurations (previously added)
 mmf list
@@ -52,20 +52,24 @@ Available shortcuts for options:
 - `--dest-dir`: `-d`
 - `--pattern`: `-p`
 - `--watch`: `-w`
+- `--name`: `-n`
 
 ## Development
 
-Fork and clone this repository to develop on latest master branch. General steps to execute python code form this repo:
+Fork and clone this repository to develop on latest master branch. General steps to execute python code from this repo:
 
 ```sh
 # Create development environment
 cd /move-my-files
-virtualenv .env && source .env/bin/activate
-python3 setup.py install
+python3 -m venv .env && source .env/bin/activate
+pip install -e '.[dev]'
 
 # Execute CLI (from code)
+cd ./app
 python3 .
 python3 . list
+# Or directly
+mmf --help
 ```
 
 Local testing with unit tests and CLI:
@@ -76,8 +80,10 @@ python3 -m pytest tests -v
 
 # Install CLI locally to test (basically testing setup.py)
 pip install -e .
-mmf
+mmf --help
 ```
+
+You can also use `tox` to test on different environments.
 
 For Packaging and publishing see here:
 

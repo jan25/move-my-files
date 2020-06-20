@@ -7,3 +7,6 @@ conf-test/
 *.egg-info
 build/
 dist/
+pyvenv.cfg
+.testenv
+.tox/

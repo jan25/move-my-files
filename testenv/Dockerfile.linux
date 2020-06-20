@@ -1,0 +1,8 @@
+FROM python:3.7-slim
+# Useful to run tests on linux
+
+WORKDIR /usr/src/app
+COPY . .
+
+RUN pip install -e ".[dev]"
+CMD [ "tox" ]

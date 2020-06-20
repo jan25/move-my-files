@@ -58,9 +58,18 @@ mmf --source soure/dir --dest-dir dest/dir --pattern ".jpg$"
 
 - Emojis in output
 
-- Use tox
+- Use tox and tox-quickstart cli
 
 - Add version numbers at requires in setup.py
+
+- commands used to package and publish
+
+  - `python3 setup.py bdist_wheel sdist`
+  - `twine upload dist/*`
+
+- exclude /tests in pattern
+
+- `docker build -t move-my-files . -f testenv/Dockerfile.linux` for creating test container. The `.` is CONTEXT directory path(useful for `COPY . .`).
 
 ## Misc
 

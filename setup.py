@@ -24,7 +24,7 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3 :: Only',
     ],
-    packages=find_packages(where='.'),
+    packages=find_packages(where='.', exclude=['tests']),
     package_dir={'': '.'},
     python_requires='>=3.5, <4',
     install_requires=[
@@ -35,6 +35,7 @@ setup(
     extras_require={
         'dev': [
             'pytest',
+            'tox',
         ]
     },
     entry_points={
