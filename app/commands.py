@@ -43,6 +43,7 @@ def move_files(srcdir, pat, destdir):
     with os.scandir(srcdir) as it:
         for entry in it:
             if entry.is_file() and match(pat, entry.name):
+                #shutil.move(os.path.join(src, filename), os.path.join(dst, filename)) this fix the replacement of duplicates
                 final_dest = shutil.move(entry.path, destdir)
                 print(f'{entry.path} moved to {final_dest}')
 
