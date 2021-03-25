@@ -6,5 +6,5 @@
 #
 click==7.1.2              # via move-my-files (setup.py)
 pathtools==0.1.2          # via watchdog
-pyyaml==5.3.1             # via move-my-files (setup.py)
+pyyaml==5.4             # via move-my-files (setup.py)
 watchdog==0.10.2          # via move-my-files (setup.py)
